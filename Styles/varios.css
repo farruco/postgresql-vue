@@ -1,0 +1,21 @@
+html {
+  font-family: sans-serif;
+}
+
+h3 {
+  color: #369;
+  font-family: Arial, Helvetica;
+  font-weight: lighter;
+  text-align: center;
+}
+
+select {
+  cursor: pointer;
+  padding: 10px;
+  background:paleturquoise;
+  border:none;
+  /* Para centrar un element inline. */
+  display: block;
+  margin-left: auto;
+  margin-right: auto
+}
