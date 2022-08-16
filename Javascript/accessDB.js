@@ -1,7 +1,7 @@
 // Lo importa -server.js-.
 // Establece la conexión y hace las consultas SQL.
-const { Pool } = require('pg') // Biblioteca que interactua con la D.B.
-const pool = new Pool(
+const pgp = require('pg-promise')() // Biblioteca que interactua con la D.B.
+const cn = (
   {
     user: 'github',
     host: '',
@@ -11,13 +11,15 @@ const pool = new Pool(
   }
 )
 
-const consultarPool= function(pool, seleccionar, res) {
-  pool.query(seleccionar)
+const db = pgp(cn)
+
+const consultarDb= function(db, seleccionar, res) {
+  db.any(seleccionar)
     .then(response => {
-      res.send(response.rows)
+      res.send(response)
   })
   .catch(error => {
-    console.log('Error en Javascript/sql-connect.js -> consultarPool: ' + error.message)
+    console.log('Error en Javascript/sql-connect.js -> consultarDb: ' + error.message)
   })
 }
 // Recupera todas las filas de la tabla.
@@ -26,7 +28,7 @@ const selectAllListasReproducion = 'SELECT nombre_lista "Lista", posicion "Posic
                                      'ORDER BY nombre_lista, posicion;'
 
 exports.selectAllListasReproducion = (req, res) => {
-  consultarPool(pool, selectAllListasReproducion, res)
+  consultarDb(db, selectAllListasReproducion, res)
 }
 // Recupera todas las filas de la tabla.
 const selectAllNombresListas = 'SELECT nombre_lista "Lista" ' +
@@ -34,5 +36,5 @@ const selectAllNombresListas = 'SELECT nombre_lista "Lista" ' +
                                  'GROUP BY nombre_lista;'
 
 exports.selectAllNombresListas = (req, res) => {
-  consultarPool(pool, selectAllNombresListas, res)
+  consultarDb(db, selectAllNombresListas, res)
 }
